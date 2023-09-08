@@ -21,5 +21,5 @@ fsdp_policy_mp: bfloat16
 # the dtype for the reference model (which is used for inference only)
 reference_dtype: float16
 
-revision: "main"
+revision: "v1.1.8"
 
