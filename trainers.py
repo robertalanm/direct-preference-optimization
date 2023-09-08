@@ -345,7 +345,8 @@ class BasicTrainer(object):
                 local_microbatch = slice_and_move_batch_for_device(global_microbatch, self.rank, self.world_size, self.rank)
                 loss, metrics = self.get_batch_metrics(local_microbatch, self.config.loss, train=True)
                 (loss / self.config.gradient_accumulation_steps).backward()
-
+                print(loss.item())
+                print(metrics)
                 for k, v in metrics.items():
                     batch_metrics[k].extend(v)
 
@@ -363,7 +364,7 @@ class BasicTrainer(object):
             self.example_counter += self.config.batch_size
 
             if last_log is None or (time.time() - last_log > self.config.minimum_log_interval_secs):
-                mean_train_metrics = {k: (sum(v) / len(v) if len(v) > 0 else 10) for k, v in batch_metrics.items()}
+                mean_train_metrics = {k: (sum(v) / len(v) if len(v) > 0 else 0) for k, v in batch_metrics.items()}
                 mean_train_metrics['counters/examples'] = self.example_counter
                 mean_train_metrics['counters/updates'] = self.batch_counter
                 rank0_print(f'train stats after {self.example_counter} examples: {formatted_dict(mean_train_metrics)}')
