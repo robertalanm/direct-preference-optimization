@@ -10,10 +10,10 @@ archive: null
 
 # the name of the module class to wrap with FSDP; should be something like
 #   e.g. GPT2Block, GPTNeoXLayer, LlamaDecoderLayer, etc.
-block_name: null
+block_name: LlamaDecoderLayer
 
 # the dtype for the policy parameters/optimizer state
-policy_dtype: float32
+policy_dtype: bfloat16
 
 # the mixed precision dtype if using FSDP; defaults to the same as the policy
 fsdp_policy_mp: bfloat16
