@@ -359,12 +359,13 @@ class BasicTrainer(object):
             examples_per_second = self.config.batch_size / step_time
             batch_metrics['examples_per_second'].append(examples_per_second)
             batch_metrics['grad_norm'].append(grad_norm)
+            print(batch_metrics)
 
             self.batch_counter += 1
             self.example_counter += self.config.batch_size
 
             if last_log is None or (time.time() - last_log > self.config.minimum_log_interval_secs):
-                mean_train_metrics = {k: (sum(v) / len(v) if len(v) > 0 else 0) for k, v in batch_metrics.items()}
+                mean_train_metrics = {k: (sum(v) / len(v)) for k, v in batch_metrics.items()}
                 mean_train_metrics['counters/examples'] = self.example_counter
                 mean_train_metrics['counters/updates'] = self.batch_counter
                 rank0_print(f'train stats after {self.example_counter} examples: {formatted_dict(mean_train_metrics)}')
