@@ -362,8 +362,8 @@ class BasicTrainer(object):
             self.batch_counter += 1
             self.example_counter += self.config.batch_size
 
-            if last_log is None or time.time() - last_log > self.config.minimum_log_interval_secs:
-                mean_train_metrics = {k: sum(v) / len(v) for k, v in batch_metrics.items()}
+            if last_log is None or (time.time() - last_log > self.config.minimum_log_interval_secs):
+                mean_train_metrics = {k: (sum(v) / len(v) if len(v) > 0 else 10) for k, v in batch_metrics.items()}
                 mean_train_metrics['counters/examples'] = self.example_counter
                 mean_train_metrics['counters/updates'] = self.batch_counter
                 rank0_print(f'train stats after {self.example_counter} examples: {formatted_dict(mean_train_metrics)}')
